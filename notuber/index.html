@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Notuber Map</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+		<link rel="stylesheet" href="map-style.css" />
+		<script>
+			var myLat = 0;
+			var myLng = 0;
+			var me = new google.maps.LatLng(myLat, myLng);
+			var xhr = new XMLHttpRequest();
+			var myOptions = {
+						zoom: 13,
+						center: me,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+					};
+			var map;
+			var marker;
+			var data;
+			var infowindow = new google.maps.InfoWindow();
+			
+			function init()
+			{
+				map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+				getMyLocation();
+				xhr.open('POST', 'https://defense-in-derpth.herokuapp.com/submit');
+				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+				xhr.onreadystatechange = function () {
+					if (xhr.readyState == 4 && xhr.status == 200){
+						data = JSON.parse(xhr.responseText);
+						console.log(data);
+					}
+				};
+				xhr.send("username=h6HzyiHK&lat="+ myLat + "&lng=" + myLng);
+			}
+			
+			function getMyLocation() {
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(function(position) {
+						myLat = position.coords.latitude;
+						myLng = position.coords.longitude;
+						renderMap();
+					});
+				}
+				else {
+					alert("Geolocation is not supported by your web browser.");
+				}
+			}
+
+			function renderMap()
+			{
+				me = new google.maps.LatLng(myLat, myLng);
+				
+				map.panTo(me);
+	
+				marker = new google.maps.Marker({
+					position: me,
+					title: "h6HzyiHK", 
+					icon: 'black_car.png'
+				});
+				marker.setMap(map); 
+			
+			for(i = 0; i < data.passengers.length; i++){
+
+				function addMarker(data, map){
+  
+  					var newmarker = new google.maps.Marker({
+    				position: {lat: data.passengers[i].lat, 
+    					lng: data.passengers[i].lng},
+    				label: data.passengers[i].username,
+    				icon: 'guy.png',
+    				map: map
+  					});
+  				}
+  			}
+			
+			
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.setContent(marker.title);
+					infowindow.open(map, marker);
+				});
+			}
+		
+		</script>
+	</head>
+	
+	<body onload="init()">
+		<div id="map_canvas"></div>
+	</body>
+</html>
