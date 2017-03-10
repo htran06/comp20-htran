@@ -5,7 +5,7 @@
 	<head>
 		<title>Notuber Map</title>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&v=3&libraries=geometry"></script>
 		<link rel="stylesheet" href="map-style.css" />
 		<script>
 			var myLat = 0;
@@ -64,24 +64,26 @@
 				marker.setMap(map); 
 			
 			for(i = 0; i < data.passengers.length; i++){
-
-				function addMarker(data, map){
-  
-  					var newmarker = new google.maps.Marker({
-    				position: {lat: data.passengers[i].lat, 
-    					lng: data.passengers[i].lng},
-    				label: data.passengers[i].username,
-    				icon: 'guy.png',
-    				map: map
-  					});
-  				}
+				place = new google.maps.LatLng (data.passengers[i].lat,data.passengers[i].lng)
+  				var newmarker = new google.maps.Marker({
+    			position: place,
+    			title: data.passengers[i].username +" is " +google.maps.geometry.spherical.computeDistanceBetween(place,me) + " miles away from you",
+    			icon: 'guy.png',
+    			map: map
+  				});
+  				google.maps.event.addListener(newmarker, 'click', function() {
+					infowindow.setContent(newmarker.title, newmarker.label);
+					infowindow.open(map, newmarker);
+				});
   			}
+ 
 			
 			
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.setContent(marker.title);
 					infowindow.open(map, marker);
 				});
+
 			}
 		
 		</script>
