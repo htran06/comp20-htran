@@ -32,7 +32,6 @@
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState == 4 && xhr.status == 200){
 						data = JSON.parse(xhr.responseText);
-						console.log(data);
 					}
 				};
 				xhr.send("username=h6HzyiHK&lat="+ myLat + "&lng=" + myLng);
