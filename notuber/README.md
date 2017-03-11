@@ -1,0 +1,3 @@
+I have hopefully implemented all features correctly (e.g. displaying vehicles and passengers in both cases (even though I have not had the chance to try it the other way around), displaying an information window with username and distance in miles from myself, have symbols for passengers and vehicles).
+I have asked my friends a few questions concerning the assignment, and gotten help from a TA.
+I spent approximately 6 hours (at least) on this assignment, mostly trying to figure out what I was supposed to even do.
