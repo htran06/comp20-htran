@@ -8,9 +8,9 @@
     $( document ).ready(function() {
     	$.get("https://messagehub.herokuapp.com/messages.json",
     		function (data) { 
+    			$('div').empty();
     			$.each(data, function(i, item) {
-    				$('div').html(this.content+' by '+this.username);
-    				console.log(this.content+' by ' + this.username);
+    				$('div').append('<p>' +this.content+' by '+this.username + '</p>');
     			})
     		});
     }, "json")
