@@ -6,11 +6,14 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script>
     $( document ).ready(function() {
-    	$.getJSON("https://messagehub.herokuapp.com/messages.json",
-    		function(data) { 
-    			$('div').html(data.content+ " by " +data.username);
-    		}, "json");
-    })
+    	$.get("https://messagehub.herokuapp.com/messages.json",
+    		function (data) { 
+    			$.each(data, function(i, item) {
+    				$('div').html(this.content+' by '+this.username);
+    				console.log(this.content+' by ' + this.username);
+    			})
+    		});
+    }, "json")
   </script>
 </head>
 
