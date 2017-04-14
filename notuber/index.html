@@ -27,7 +27,7 @@
 			{
 				map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 				getMyLocation();
-				xhr.open('POST', 'https://defense-in-derpth.herokuapp.com/submit');
+				xhr.open('POST', 'https://intense-oasis-14256.herokuapp.com/submit');
 				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState == 4 && xhr.status == 200){
