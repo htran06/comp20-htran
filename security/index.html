@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Hacking, top secret</title>
+</head>
+
+<body>
+
+<h2>Introduction</h2>
+<p>The product is a web application server that maintains and serves locations of passengers and vehicles (username, latitude, and longitude) for a long period of time. User can post such information to the server to store it, searching for posted vehicle's information, and see the information of what the passengers from five minutes ago posted.</p>
+<p>I am hired as a security consultant to document and resolve the security and privacy issues in the application (although not actually resolve it). </p>
+<h2>Methodology</h2>
+<p>I used Postman for my POST method injection. I alter the username, lat, and lng field to script tags to inject my attacks. For the GET method, I tried changing the query for /vehicle.json for it to reveal sensitive or private information. However, since my partner's code has not correctly implemented that portion, the database is impossible to be accessed, even with legitimate query.</p>
+<h2>Abstract of Findings</h2>
+<p>The most vulnerable feature of my partner's server is its instability. The server is continuously susceptible to application error, which lasts for a period of time after certain requests for POST method or GET method, especially with the /vehicle.json path. Moreover, there is no check if the server is working, which would lead to the application not working on its own if there are unexpected occurences to the database. In addition, the code does not have proper input sanitation for username, and even lat and lng variables, which should have been checked if they are legitimate numbers. This allows attackers to inject code to the database and can cause serious problems to the application.</p>
+<h2>Issues Found</h2>
+<ul>
+<li>
+<ul>
+<li>Cross-site scripting</li>
+<li>Location: Database and home index</li>
+<li>Severity: High => Attackers can inject script that creates annoying pop-ups, or to a greater magnitude, redirects this application to other pages, as well as many other harmful things to the application.</li>
+<li>Description of issue: I used Postman to post javascript scripts as username to the server, which were accepted. When the application page loads and reads the username, the script is enabled, and the the damaged is done</li>
+<img src="hacked1.png" alt="Cross-site scripting screenshot">
+<li>Resolution: Check user's input to make sure funky characters are not allowed. This step is very simple and only required one short line of code before accepting the user's input into the database.</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>Database Injection</li>
+<li>Location: Database</li>
+<li>Severity: Medium => Since the code has not implemented the portion that actually reads the latitude and longitude, cross-site scripting for these variables is limited. However, attackers still can inject unwanted data to the server, potentially overloading the database, and giving incorrect results to users who requested data.</li>
+<li>Description of issue: The code does not check whether the lat and lng inputs are actual numbers or not (which is a requirement for the assignment), therefore, one can insert whatever data they want to the database under the variable names of lat and lng. This will be troublesome if the code actually reads the variables, as it can enable cross-site scripting. But before that, damage has already been done, since precious memory is already being wasted on these illegitimate inputs.</li>
+<img src="Hacked3.png" alt="Databse screenshot">
+<li>Resolution: Using a parseFloat function for the user's inputs for lat and lng would convert those input into numbers. To be even more cautious, one can run a check to see if the numbers are technically sound as latitude and longitude or not before inserting them to the database.</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>Application Error</li>
+<li>Location: The whole application, including the POST route</li>
+<li>Severity: High => The application page is not at all stable. One simple random POST input or GET reqest query could render the application error for the page. Even though the page can later be working again (after a few minutes), GET and POST requests would still frequently cause the page to encounter application error. This could easily frsutrate any users, and furthermore could fail the entire purpose of a server, which should be running all the time.</li>
+<img src="Hacked3-1.png" alt="Application Error">
+<li>Resolution: Having a check on the database to make sure that the application is still running (albeit not with full functions) when the database is down would be beneficial. In addition, more checks on data inputs and database requests must be implemented to reduce the risks of overloading the database and improper access to it.</li>
+</ul>
+</li>
+</ul>
+</body>
+</html>   
+
+
