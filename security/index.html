@@ -46,6 +46,8 @@
 </ul>
 </li>
 </ul>
+<h2>Conclusion</h2>
+<p>The site is not working to its best extend due to the application error. This makes it hard for testing for privacy and security vulnerabilities, since the application frequently goes down due to the error. Moreover, the vehicle.json path is not working at all. Considerations: Remove the "response.set" and "indexPage" portion of the /vehicle.json portion so it can (hopefully) works properly; check if the database is working, then make the application do something if the database is not available to maybe avoid the application error; remove the unused mLab database to possibly avoid the application error (the application currently has 2); validate all user inputs to eliminate funky characters that would enable cross-site scripting; limit user's access to the database by validating the query string and database information in the source code.</p>  
 </body>
 </html>   
 
